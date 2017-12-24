@@ -1,4 +1,4 @@
-# testframeworkexample
+# Test framework example
 Demo test framework project.
 
 Features:
