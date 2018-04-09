@@ -10,6 +10,6 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "stepdef",
-        tags={"@Test2"})
+        tags={"@Test_Youtube"})
 public class TestRunner {
 }
