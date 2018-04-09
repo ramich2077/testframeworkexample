@@ -8,7 +8,7 @@ Quickstart (need a working Maven at all): mvn clean test allure:report.
 Results will be availiable in target/site folder. 
 
 TODO:
-1. PageObjects + scenarios for them.
+[s]1. PageObjects + scenarios for them.[/s]
 2. Screenshot capture.
 3. Parallel execution.
 4. To be continued...
