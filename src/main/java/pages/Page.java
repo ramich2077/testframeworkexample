@@ -1,15 +1,16 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.DriverLoader;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Ramich on 07.04.2018.
@@ -37,6 +38,14 @@ public abstract class Page {
 
     protected WebElement waitForElement(WebElement element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    protected List<WebElement> waitForElementsList(List<WebElement> element) {
+        try{
+            return wait.until(ExpectedConditions.visibilityOfAllElements(element));
+        } catch (WebDriverException e) {
+            return Collections.emptyList();
+        }
     }
 
     protected WebElement waitForElement(By locatedBy) {

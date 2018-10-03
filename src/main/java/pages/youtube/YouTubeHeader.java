@@ -1,5 +1,6 @@
 package pages.youtube;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindAll;
@@ -37,7 +38,7 @@ public abstract class YouTubeHeader extends Page {
 
     @FindAll({
             @FindBy(css = "button[aria-label='Создать']"),
-            @FindBy(css = "button[aria-label= 'Добавить видео']")
+            @FindBy(css = "button[aria-label='Добавить видео']")
     })
     private WebElement addVideoButton;
 
@@ -45,10 +46,13 @@ public abstract class YouTubeHeader extends Page {
     private WebElement studioLink;
 
     //For Chrome only, I love you google.
-    @FindBy(id = "label")
+    @FindAll({
+            @FindBy(css = "button[aria-label='Создать видео или запись']"),
+            @FindBy(id = "create-icon")
+    })
     private WebElement addVideoChrome;
 
-    @FindBy(css = "a[href='/logout']")
+    @FindBy(css = "a[href='https://www.youtube.com/logout']")
     private WebElement logoutButton;
 
     public LoginPage login(){
@@ -57,10 +61,12 @@ public abstract class YouTubeHeader extends Page {
     }
 
     public YouTubeVideoUploadPage uploadVideo(){
-        waitForElement(addVideoButton).click();
         if(DriverLoader.getDriver() instanceof ChromeDriver) {
             waitForElement(addVideoChrome).click();
+        } else {
+            waitForElement(addVideoButton).click();
         }
+        waitForElement(By.xpath("//yt-formatted-string[text()='Добавить видео']")).click();
         return new YouTubeVideoUploadPage();
     }
 

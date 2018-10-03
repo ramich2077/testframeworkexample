@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
  */
 public class YouTubeStudioPage extends YouTubeHeader {
 
-    @FindBy(css = "li#creator-sidebar-section-id-video-manager a")
+    @FindBy(css = "a#menu-item-1")
     private WebElement videoManagerLink;
 
     public YouTubeVideoManagerPage openVideoManager() {

@@ -2,6 +2,7 @@ package pages.youtube;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import util.DriverLoader;
 
@@ -12,17 +13,19 @@ import java.util.List;
  */
 public class YouTubeVideoManagerPage extends YouTubeHeader {
 
-    @FindBy(css = "span#creator-subheader-item-count")
-    WebElement videoCounter;
+    @FindBy(css = "div#row-container")
+    List<WebElement> videos;
 
     public void deleteAllVideos() {
-        if(waitForElement(videoCounter).getText().equals("0")) return;
+        if(waitForElementsList(videos).isEmpty()) return;
 
-        List<WebElement> videos = DriverLoader.getDriver().findElements(By.cssSelector("#vm-playlist-video-list-ol li.ng-binding"));
         for (WebElement video: videos) {
-            waitForElement(waitForElement(video).findElement(By.cssSelector("button.edit-expand-menu-button"))).click();
-            waitForElement(By.cssSelector("li span.vm-video-edit-menu-delete")).click();
-            waitForElement(By.cssSelector("button.vm-video-actions-delete-button-confirm")).click();
+            new Actions(DriverLoader.getDriver())
+                    .moveToElement(video.findElement(By.cssSelector("ytcp-icon-button.open-menu-button")))
+                    .click().perform();
+            waitForElement(By.cssSelector("paper-item[test-id='delete']")).click();
+            waitForElement(By.cssSelector("ytcp-form-checkbox#delete-confirm-checkbox div#checkboxContainer")).click();
+            waitForElement(By.cssSelector("ytcp-button#delete-confirm-button")).click();
         }
     }
 
