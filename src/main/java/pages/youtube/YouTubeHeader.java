@@ -1,12 +1,11 @@
 package pages.youtube;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import lombok.Getter;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.WebElement;
+import pages.annotation.ElementTitle;
 import pages.Page;
-import util.DriverLoader;
 
 import java.util.List;
 
@@ -19,55 +18,61 @@ public abstract class YouTubeHeader extends Page {
     protected WebElement head;
 
     @FindBy(css = "a[title='Главная страница YouTube']")
-    protected WebElement logoLink;
+    @ElementTitle("Главная страница YouTube")
+    @Getter
+    public WebElement logoLink;
 
     @FindBy(css = "input#search")
-    protected WebElement searchInput;
+    @ElementTitle("Поле 'Поиск'")
+    @Getter
+    public WebElement searchInput;
 
     @FindBy(css = "button#search-icon-legacy")
-    protected WebElement searchButton;
+    @ElementTitle("Поиск")
+    @Getter
+    public WebElement searchButton;
 
     @FindAll({
             @FindBy(css = "button#avatar-btn"),
             @FindBy(css = "button.yt-masthead-user-icon")
     })
-    private WebElement avatarButton;
+    @ElementTitle("Аккаунт")
+    @Getter
+    public WebElement avatarButton;
 
     @FindBy(xpath = "//*[@id='button' and contains(./*/text(), 'Войти')]")
-    private WebElement loginButton;
+    @ElementTitle("Войти")
+    @Getter
+    public WebElement loginButton;
 
     @FindAll({
             @FindBy(css = "button[aria-label='Создать']"),
-            @FindBy(css = "button[aria-label='Добавить видео']")
-    })
-    private WebElement addVideoButton;
-
-    @FindBy(xpath = "//yt-formatted-string[contains(text(), 'Творческая студия')]")
-    private WebElement studioLink;
-
-    //For Chrome only, I love you google.
-    @FindAll({
+            @FindBy(css = "button[aria-label='Добавить видео']"),
             @FindBy(css = "button[aria-label='Создать видео или запись']"),
             @FindBy(id = "create-icon")
     })
-    private WebElement addVideoChrome;
+    @ElementTitle("Кнопка Добавить видео")
+    @Getter
+    public WebElement addVideoButton;
+
+    @FindBy(xpath = "//yt-formatted-string[text()='Добавить видео']")
+    @ElementTitle("Добавить видео")
+    @Getter
+    public WebElement addVideo;
+
+    @FindBy(xpath = "//yt-formatted-string[contains(text(), 'Творческая студия')]")
+    @ElementTitle("Творческая студия")
+    @Getter
+    public WebElement studioLink;
 
     @FindBy(css = "a[href='https://www.youtube.com/logout']")
-    private WebElement logoutButton;
+    @ElementTitle("Выйти")
+    @Getter
+    public WebElement logoutButton;
 
     public LoginPage login(){
         waitForElement(loginButton).click();
         return new LoginPage();
-    }
-
-    public YouTubeVideoUploadPage uploadVideo(){
-        if(DriverLoader.getDriver() instanceof ChromeDriver) {
-            waitForElement(addVideoChrome).click();
-        } else {
-            waitForElement(addVideoButton).click();
-        }
-        waitForElement(By.xpath("//yt-formatted-string[text()='Добавить видео']")).click();
-        return new YouTubeVideoUploadPage();
     }
 
     public YouTubeMainPage openMainPage(){

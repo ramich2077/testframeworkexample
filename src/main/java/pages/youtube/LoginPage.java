@@ -2,30 +2,35 @@ package pages.youtube;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pages.annotation.ElementTitle;
 import pages.Page;
+import pages.annotation.PageTitle;
+import lombok.Getter;
 
 /**
  * Created by Ramich on 07.04.2018.
  */
+@PageTitle("Login page")
 public class LoginPage extends Page {
 
+    @ElementTitle("Логин")
     @FindBy(xpath = "//input[@id='identifierId']")
-    private WebElement identifierInput;
+    @Getter
+    public WebElement identifierInput;
 
+    @ElementTitle("Логин - Далее")
     @FindBy(xpath = "//div[@id='identifierNext']")
-    private WebElement identifierNextButton;
+    @Getter
+    public WebElement identifierNextButton;
 
+    @ElementTitle("Пароль")
     @FindBy(xpath = "//input[@name='password']")
-    private WebElement passwordInput;
+    @Getter
+    public WebElement passwordInput;
 
+    @ElementTitle("Пароль - Далее")
     @FindBy(xpath = "//div[@id='passwordNext']")
-    private WebElement passwordNextButton;
+    @Getter
+    public WebElement passwordNextButton;
 
-    public YouTubeMainPage login(String login, String password) {
-        waitForElement(identifierInput).sendKeys(login);
-        waitForElement(identifierNextButton).click();
-        waitForElement(passwordInput).sendKeys(password);
-        waitForElement(passwordNextButton).click();
-        return new YouTubeMainPage();
-    }
 }
