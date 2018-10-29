@@ -23,6 +23,8 @@ import java.util.List;
 @Slf4j
 public abstract class Page {
 
+    private static final String WDEXCEPTION_ERROR_MESSAGE = "WebDriverException: %s";
+
     private WebDriverWait wait;
 
     public Page() {
@@ -62,15 +64,27 @@ public abstract class Page {
     }
 
     public void fillField(String title, String text) throws AutotestError {
-        waitForElement(getElementByTitle(title)).sendKeys(text);
+        try {
+            waitForElement(getElementByTitle(title)).sendKeys(text);
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void click(String title) throws AutotestError {
-        waitForElement(getElementByTitle(title)).click();
+        try {
+            waitForElement(getElementByTitle(title)).click();
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void clearText(String title) throws AutotestError {
-        waitForElement(getElementByTitle(title)).clear();
+        try {
+            waitForElement(getElementByTitle(title)).clear();
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void uploadFile(String title, String filename) throws AutotestError {
@@ -78,23 +92,39 @@ public abstract class Page {
         File file = new File(filename);
 
         WebElement input = getElementByTitle(title);
-        waitForElement(getBy(title));
-        setAttribute(input, "visibility", "visible");
-        setAttribute(input, "display", "block");
-        input.sendKeys(file.getAbsolutePath());
+        try {
+            waitForElement(getBy(title));
+            setAttribute(input, "visibility", "visible");
+            setAttribute(input, "display", "block");
+            input.sendKeys(file.getAbsolutePath());
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void waitForElementClickable(String title, int timeout) throws AutotestError {
-        DriverManager.getWait(timeout).until(ExpectedConditions.elementToBeClickable(getElementByTitle(title)));
+        try {
+            DriverManager.getWait(timeout).until(ExpectedConditions.elementToBeClickable(getElementByTitle(title)));
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void waitForElementPresence(String title, int timeout) throws AutotestError {
-        DriverManager.getWait(timeout).until(ExpectedConditions.presenceOfElementLocated(getBy(title)));
+        try {
+            DriverManager.getWait(timeout).until(ExpectedConditions.presenceOfElementLocated(getBy(title)));
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     public void waitTextToBePresentInElement(String title, String text, int timeout) throws AutotestError {
-        DriverManager.getWait(timeout).until(ExpectedConditions
-                .textToBePresentInElement(getElementByTitle(title), text));
+        try {
+            DriverManager.getWait(timeout).until(ExpectedConditions
+                    .textToBePresentInElement(getElementByTitle(title), text));
+        } catch (WebDriverException e) {
+            throw new AutotestError(String.format(WDEXCEPTION_ERROR_MESSAGE, e.getMessage()), e);
+        }
     }
 
     protected WebElement waitForElement(WebElement element) {

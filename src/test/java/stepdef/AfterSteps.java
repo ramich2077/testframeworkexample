@@ -3,10 +3,10 @@ package stepdef;
 import cucumber.api.java.After;
 import exception.AutotestError;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.openqa.selenium.WebDriverException;
 import util.DriverManager;
 import util.PageManager;
+
+import static stepdef.GeneralSteps.failOnError;
 
 /**
  * Created by Ramich on 27.10.2018.
@@ -23,7 +23,7 @@ public class AfterSteps {
             PageManager.getPageManager().setCurrentPageAs("Login page");
             PageManager.getPageManager().getCurrentPage().fillField("identifier input", "test06042018");
             PageManager.getPageManager().getCurrentPage().click("identifier next button");
-            PageManager.getPageManager().getCurrentPage().fillField("password input", "sbt_test");
+            PageManager.getPageManager().getCurrentPage().fillField("password input", "T3st_3xampl3");
             PageManager.getPageManager().getCurrentPage().click("password next button");
             PageManager.getPageManager().setCurrentPageAs("Main page");
             PageManager.getPageManager().getCurrentPage().click("avatar button");
@@ -34,16 +34,11 @@ public class AfterSteps {
             PageManager.getPageManager().getCurrentPage().doMethod("delete all videos");
             PageManager.getPageManager().getCurrentPage().click("avatar button");
             PageManager.getPageManager().getCurrentPage().click("logout button");
-        } catch (AutotestError|WebDriverException error) {
+        } catch (AutotestError error) {
             failOnError(error);
         } finally {
             DriverManager.reset();
         }
     }
 
-    //FIXME Wrap WDException to Autotest error
-    private void failOnError(Exception error) {
-        log.error(error.getMessage(), error);
-        Assert.fail(String.format("Test failed with error: %s", error.getMessage()));
-    }
 }

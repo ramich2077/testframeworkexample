@@ -8,7 +8,7 @@ Feature: Youtube Test Task
     And   I am on page "Login page"
     And   Fill field "identifier input" with text "test06042018"
     And   Press button "identifier next button"
-    And   Fill field "password input" with text "sbt_test"
+    And   Fill field "password input" with text "T3st_3xampl3"
     And   Press button "password next button"
     And   I am on page "Main page"
     And   Press button "add video button"
