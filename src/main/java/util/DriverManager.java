@@ -31,10 +31,10 @@ public class DriverManager {
                         .getResourceAsStream("config.properties"));
         } catch (FileNotFoundException e) {
             log.error("Cannot find config file");
-            System.exit(-1);
+            System.exit(1);
         } catch (IOException e) {
             log.error("Unexpected IO exception: {}", e.getMessage());
-            System.exit(-1);
+            System.exit(1);
         }
 
         System.setProperty("webdriver.chrome.driver", config.getProperty("chrome_executable_path"));

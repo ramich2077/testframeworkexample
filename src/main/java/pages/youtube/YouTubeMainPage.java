@@ -1,6 +1,6 @@
 package pages.youtube;
 
-import pages.annotation.PageTitle;
+import annotation.PageTitle;
 
 /**
  * Created by Ramich on 07.04.2018.

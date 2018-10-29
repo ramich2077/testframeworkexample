@@ -2,10 +2,10 @@ package stepdef;
 
 import cucumber.api.java.After;
 import cucumber.api.java.en.When;
+import exception.AutotestError;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
-import pages.exception.AutotestError;
 import util.DriverManager;
 import util.PageManager;
 
@@ -33,7 +33,7 @@ public class GeneralSteps {
     public void iAmOnPage(String title) {
         try {
             PageManager.getPageManager().setCurrentPageAs(title);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -42,7 +42,7 @@ public class GeneralSteps {
     public void pressButton(String title) {
         try {
             PageManager.getPageManager().getCurrentPage().click(title);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -51,7 +51,7 @@ public class GeneralSteps {
     public void fillField(String title, String text) {
         try {
             PageManager.getPageManager().getCurrentPage().fillField(title, text);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -60,7 +60,7 @@ public class GeneralSteps {
     public void clearField(String title) {
         try {
             PageManager.getPageManager().getCurrentPage().clearText(title);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -69,7 +69,7 @@ public class GeneralSteps {
     public void doMethod(String name) {
         try {
             PageManager.getPageManager().getCurrentPage().doMethod(name);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -78,7 +78,7 @@ public class GeneralSteps {
     public void iSelectFileForUpload(String filename, String elementTitle) {
         try {
             PageManager.getPageManager().getCurrentPage().uploadFile(elementTitle, filename);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
@@ -88,12 +88,13 @@ public class GeneralSteps {
         try {
             PageManager.getPageManager().getCurrentPage()
                     .waitTextToBePresentInElement(title, text, timeout);
-        } catch (AutotestError error) {
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         }
     }
 
-    private void failOnError(AutotestError error) {
+    //FIXME Wrap WDException to Autotest error
+    private void failOnError(Exception error) {
         log.error(error.getMessage(), error);
         Assert.fail(String.format("Test failed with error: %s", error.getMessage()));
     }

@@ -1,22 +1,21 @@
 package pages;
 
+import exception.AutotestError;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.annotation.ElementTitle;
-import pages.exception.AutotestError;
 import util.DriverManager;
+import util.Utils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Ramich on 07.04.2018.
@@ -41,25 +40,13 @@ public abstract class Page {
     }
 
     private By getBy(String title) throws AutotestError {
-        return new Annotations(
-                Arrays.stream(this.getClass().getDeclaredFields())
-                        .filter(field -> field.isAnnotationPresent(ElementTitle.class)
-                                && field.getDeclaredAnnotation(ElementTitle.class).value().equals(title))
-                        .findFirst()
-                        .orElseThrow(()->
-                                new AutotestError(String.format("Element wiht title %s isn't found", title)))
-                ).buildBy();
+        return new Annotations(Utils.getElementByTitle(this.getClass(), title)).buildBy();
     }
 
     private WebElement getElementByTitle(String title) throws AutotestError {
         try {
-        return (WebElement) this.getClass().getMethod("get" + StringUtils.capitalize(
-                Arrays.stream(this.getClass().getFields())
-                        .filter(field -> field.isAnnotationPresent(ElementTitle.class)
-                                && field.getDeclaredAnnotation(ElementTitle.class).value().equals(title))
-                        .findFirst()
-                        .orElseThrow(() -> new AutotestError(String.format("Element with title %s isn't found", title)))
-                        .getName()))
+        return (WebElement) this.getClass().getMethod(
+                "get" + StringUtils.capitalize(Utils.getElementByTitle(this.getClass(), title).getName()))
                 .invoke(this);
         } catch (IllegalAccessException|InvocationTargetException|NoSuchMethodException e) {
             throw new AutotestError(String.format("Getter method isn't found for element %s", title), e);
@@ -67,10 +54,8 @@ public abstract class Page {
     }
 
     public void doMethod(@NonNull String name) throws AutotestError {
-        String[] strings = name.split(" ");
-        name = strings[0] + Arrays.stream(strings).skip(1).map(StringUtils::capitalize).collect(Collectors.joining());
         try {
-            this.getClass().getMethod(name).invoke(this);
+            this.getClass().getMethod(Utils.castToCamelCase(name)).invoke(this);
         } catch (IllegalAccessException|InvocationTargetException|NoSuchMethodException e) {
             throw new AutotestError(String.format("Method %s isn't found", name), e);
         }

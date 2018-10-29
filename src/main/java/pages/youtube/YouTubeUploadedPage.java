@@ -1,11 +1,11 @@
 package pages.youtube;
 
+import annotation.Element;
+import annotation.PageTitle;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import pages.annotation.ElementTitle;
-import pages.annotation.PageTitle;
 
 /**
  * Created by Ramich on 08.04.2018.
@@ -16,42 +16,43 @@ import pages.annotation.PageTitle;
 public class YouTubeUploadedPage extends YouTubeHeader {
 
     @FindBy(className = "upload-status-text")
-    @ElementTitle("Статус загрузки")
+    @Element
     @Getter
-    public WebElement uploadStatus;
+    private WebElement uploadStatus;
 
     @FindBy(css = "textarea.video-settings-description")
-    @ElementTitle("Описание видео")
+    @Element
     @Getter
-    public WebElement descriptionInput;
+    private WebElement descriptionInput;
 
     @FindBy(css = "input.video-settings-add-tag")
-    @ElementTitle("Теги")
+    @Element
     @Getter
-    public WebElement tagsInput;
+    private WebElement tagsInput;
 
     @FindBy(css = "input.video-settings-title")
-    @ElementTitle("Название видео")
+    @Element
     @Getter
-    public WebElement titleInput;
+    private WebElement titleInput;
 
     @FindBy(css = "button.save-changes-button")
-    @ElementTitle("Опубликовать")
+    @Element
     @Getter
-    public WebElement publishButton;
+    private WebElement publishButton;
 
     @FindBy(css = "div.save-error-message")
-    @ElementTitle("Сообщение о загрузке")
+    @Element
     @Getter
-    public WebElement alertMessage;
+    private WebElement alertMessage;
 
     @FindBy(css = "#upload-item-0 button.return-to-editing-button span")
-    @ElementTitle("Вернуться к редактированию")
+    @Element
     @Getter
-    public WebElement returnToEditButton;
+    private WebElement returnToEditButton;
 
     @FindBy(css = "input.share-panel-url")
+    @Element
     @Getter
-    public WebElement shareLink;
+    private WebElement shareLink;
 
 }

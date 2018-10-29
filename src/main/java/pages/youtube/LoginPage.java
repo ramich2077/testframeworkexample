@@ -1,11 +1,11 @@
 package pages.youtube;
 
+import annotation.Element;
+import annotation.PageTitle;
+import lombok.Getter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import pages.annotation.ElementTitle;
 import pages.Page;
-import pages.annotation.PageTitle;
-import lombok.Getter;
 
 /**
  * Created by Ramich on 07.04.2018.
@@ -13,24 +13,24 @@ import lombok.Getter;
 @PageTitle("Login page")
 public class LoginPage extends Page {
 
-    @ElementTitle("Логин")
+    @Element
     @FindBy(xpath = "//input[@id='identifierId']")
     @Getter
-    public WebElement identifierInput;
+    private WebElement identifierInput;
 
-    @ElementTitle("Логин - Далее")
+    @Element
     @FindBy(xpath = "//div[@id='identifierNext']")
     @Getter
-    public WebElement identifierNextButton;
+    private WebElement identifierNextButton;
 
-    @ElementTitle("Пароль")
+    @Element
     @FindBy(xpath = "//input[@name='password']")
     @Getter
-    public WebElement passwordInput;
+    private WebElement passwordInput;
 
-    @ElementTitle("Пароль - Далее")
+    @Element
     @FindBy(xpath = "//div[@id='passwordNext']")
     @Getter
-    public WebElement passwordNextButton;
+    private WebElement passwordNextButton;
 
 }

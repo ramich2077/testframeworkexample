@@ -1,10 +1,10 @@
 package util;
 
+import annotation.PageTitle;
+import exception.AutotestError;
 import org.openqa.selenium.support.PageFactory;
 import org.reflections.Reflections;
 import pages.Page;
-import pages.annotation.PageTitle;
-import pages.exception.AutotestError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class PageManager {
         return pageManager;
     }
 
-    public <T extends Page> T getPage(String title) throws AutotestError {
+    private <T extends Page> T getPage(String title) throws AutotestError {
         try {
             return (T) PageFactory.initElements(DriverManager.getDriver(), Class.forName(pages.get(title)));
         } catch (ClassNotFoundException e) {

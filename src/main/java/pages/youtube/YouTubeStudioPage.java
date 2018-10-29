@@ -1,10 +1,10 @@
 package pages.youtube;
 
+import annotation.Element;
+import annotation.PageTitle;
 import lombok.Getter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import pages.annotation.ElementTitle;
-import pages.annotation.PageTitle;
 
 /**
  * Created by Ramich on 09.04.2018.
@@ -13,13 +13,8 @@ import pages.annotation.PageTitle;
 public class YouTubeStudioPage extends YouTubeHeader {
 
     @FindBy(css = "a#menu-item-1")
-    @ElementTitle("Менеджер видео")
+    @Element
     @Getter
-    public WebElement videoManagerLink;
-
-    public YouTubeVideoManagerPage openVideoManager() {
-        waitForElement(videoManagerLink).click();
-        return new YouTubeVideoManagerPage();
-    }
+    private WebElement videoManagerLink;
 }
  

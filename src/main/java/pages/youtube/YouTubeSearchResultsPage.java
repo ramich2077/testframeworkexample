@@ -1,12 +1,12 @@
 package pages.youtube;
 
+import annotation.Element;
+import annotation.PageTitle;
+import exception.AutotestError;
 import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import pages.annotation.ElementTitle;
-import pages.annotation.PageTitle;
-import pages.exception.AutotestError;
 import util.Utils;
 
 /**
@@ -20,16 +20,16 @@ public class YouTubeSearchResultsPage extends YouTubeHeader {
     private WebElement searchResultsContainer;
 
     @FindBy(css = "div#container.ytd-search a#video-title")
-    @ElementTitle("Название видео")
+    @Element
     @Getter
-    public WebElement videoTitle;
-
-    private By searchResultsEntrySelector = By.cssSelector("div#dismissable.ytd-video-renderer");
+    private WebElement videoTitle;
 
     public void waitForSearchResults() throws AutotestError {
         Utils.waitForCondition(() -> {
                         waitForElement(searchButton).click();
-                        return !waitForElement(searchResultsContainer).findElements(searchResultsEntrySelector).isEmpty();
+                        return !(waitForElement(searchResultsContainer)
+                                .findElements(By.cssSelector("div#dismissable.ytd-video-renderer"))
+                                .isEmpty());
                 },600, 3);
     }
 }

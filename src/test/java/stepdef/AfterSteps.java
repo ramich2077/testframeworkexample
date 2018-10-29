@@ -1,9 +1,10 @@
 package stepdef;
 
 import cucumber.api.java.After;
+import exception.AutotestError;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import pages.exception.AutotestError;
+import org.openqa.selenium.WebDriverException;
 import util.DriverManager;
 import util.PageManager;
 
@@ -18,29 +19,30 @@ public class AfterSteps {
         try {
             DriverManager.getDriver().get("https://www.youtube.com/");
             PageManager.getPageManager().setCurrentPageAs("Main page");
-            PageManager.getPageManager().getCurrentPage().click("Войти");
+            PageManager.getPageManager().getCurrentPage().click("login button");
             PageManager.getPageManager().setCurrentPageAs("Login page");
-            PageManager.getPageManager().getCurrentPage().fillField("Логин", "test06042018");
-            PageManager.getPageManager().getCurrentPage().click("Логин - Далее");
-            PageManager.getPageManager().getCurrentPage().fillField("Пароль", "sbt_test");
-            PageManager.getPageManager().getCurrentPage().click("Пароль - Далее");
+            PageManager.getPageManager().getCurrentPage().fillField("identifier input", "test06042018");
+            PageManager.getPageManager().getCurrentPage().click("identifier next button");
+            PageManager.getPageManager().getCurrentPage().fillField("password input", "sbt_test");
+            PageManager.getPageManager().getCurrentPage().click("password next button");
             PageManager.getPageManager().setCurrentPageAs("Main page");
-            PageManager.getPageManager().getCurrentPage().click("Аккаунт");
-            PageManager.getPageManager().getCurrentPage().click("Творческая студия");
+            PageManager.getPageManager().getCurrentPage().click("avatar button");
+            PageManager.getPageManager().getCurrentPage().click("studio link");
             PageManager.getPageManager().setCurrentPageAs("Studio");
-            PageManager.getPageManager().getCurrentPage().click("Менеджер видео");
+            PageManager.getPageManager().getCurrentPage().click("video manager link");
             PageManager.getPageManager().setCurrentPageAs("Video manager");
             PageManager.getPageManager().getCurrentPage().doMethod("delete all videos");
-            PageManager.getPageManager().getCurrentPage().click("Аккаунт");
-            PageManager.getPageManager().getCurrentPage().click("Выйти");
-        } catch (AutotestError error) {
+            PageManager.getPageManager().getCurrentPage().click("avatar button");
+            PageManager.getPageManager().getCurrentPage().click("logout button");
+        } catch (AutotestError|WebDriverException error) {
             failOnError(error);
         } finally {
             DriverManager.reset();
         }
     }
 
-    private void failOnError(AutotestError error) {
+    //FIXME Wrap WDException to Autotest error
+    private void failOnError(Exception error) {
         log.error(error.getMessage(), error);
         Assert.fail(String.format("Test failed with error: %s", error.getMessage()));
     }
