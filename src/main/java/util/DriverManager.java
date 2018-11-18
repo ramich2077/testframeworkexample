@@ -1,5 +1,6 @@
 package util;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,18 +38,17 @@ public class DriverManager {
             System.exit(1);
         }
 
-        System.setProperty("webdriver.chrome.driver", config.getProperty("chrome_executable_path"));
-        System.setProperty("webdriver.gecko.driver", config.getProperty("firefox_executable_path"));
-
         defaultTimeout = Integer.valueOf(config.getProperty("default_timeout"));
 
         switch (config.getProperty("driver")) {
             case "chrome":
+                WebDriverManager.chromedriver().setup();
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--disable-notifications");
                 driver = new ChromeDriver(options);
                 break;
             case "firefox":
+                WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setCapability("marionette", true);
                 firefoxOptions.addPreference("dom.webnotifications.enabled", false);
